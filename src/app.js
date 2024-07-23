@@ -2,7 +2,7 @@
 const express = require("express");
 const productRouter = require("./routes/products.router.js");
 //creamos una app de express
-const cartsRouter = require ("./routes/carts.router.js")
+const cartsRouter = require ("./routes/carts.router.js");
 const app = express();
 const PUERTO = 8080;
 
@@ -16,7 +16,7 @@ app.use(express.json());
 //crear nuestra ruta:
 
 app.use("/api/products", productRouter);
-
+app.use("/api/carts", cartsRouter);
 
 
 //CART

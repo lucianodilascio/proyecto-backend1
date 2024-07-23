@@ -34,14 +34,14 @@
   },
   {
     "id": 4,
-    "title": "leche entera",
-    "description": "La Serenísima",
-    "price": 180,
-    "img": "sin imagen",
-    "code": "jkl012",
-    "stock": 40,
-    "category": "lácteo",
-    "status": "true"
+    "title": "fideos italianos actualizados",
+    "description": "Barilla actualizada",
+    "price": 160,
+    "img": "nueva imagen",
+    "code": "def456",
+    "stock": 25,
+    "category": "pasta actualizada",
+    "status": "false"
   },
   {
     "id": 5,

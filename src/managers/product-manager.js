@@ -1,42 +1,38 @@
 const fs = require("fs").promises;
+
 class ProductManager {
-    static ultId = 0;
+    static lastId = 0;
     constructor(path) {
         this.products = [];
         this.path = path;
 
-        this.cargarArray();
-
+        this.loadArray();
     }
 
-    async cargarArray() {
+    async loadArray() {
         try {
-            this.products = await this.leerArchivo();
+            this.products = await this.readFile();
         } catch (error) {
             console.log("Error al inicializar ProductManager");
         }
     }
 
     async addProduct({ title, description, price, img, code, stock, status, category, id }) {
-
-        //validación y si las pasa se crea el objeto con el id autoincrementable
+        // Validación y creación del objeto con el ID auto-incrementable
         if (!title || !description || !price || !img || !code || !stock || !category || !status || !id) {
-            console.log("todos los campos son obligatorios");
+            console.log("Todos los campos son obligatorios");
             return;
         }
 
-        //validar que el codigo sea UNICO
-
+        // Validar que el código sea ÚNICO
         if (this.products.some(item => item.code === code)) {
-
-            console.log(" el codigo debe ser unico");
+            console.log("El código debe ser único");
             return;
         }
 
-        //ahora si, se crea el nuevo objeto:
+        // Ahora crea el nuevo objeto
         const lastProductId = this.products.length > 0 ? this.products[this.products.length - 1].id : 0;
-        const nuevoProducto = {
-
+        const newProduct = {
             id: lastProductId + 1,
             title,
             description,
@@ -46,68 +42,93 @@ class ProductManager {
             stock,
             category,
             status
-        }
+        };
 
-        //Una vez creado, lo agregamos al array
+        // Una vez creado, agregarlo al array
+        this.products.push(newProduct);
 
-        this.products.push(nuevoProducto);
-
-        // se guardará en el archivo:
-
-        await this.guardarArchivo(this.products);
+        // Guardarlo en el archivo
+        await this.saveFile(this.products);
     }
-
-
-
 
     async getProducts() {
         try {
-            const arrayProductos = await this.leerArchivo();
-            return arrayProductos;
-
+            const productArray = await this.readFile();
+            return productArray;
         } catch (error) {
-            console.log("error al leer el archivo", error);
-
+            console.log("Error al leer el archivo", error);
         }
-
     }
 
     async getProductById(id) {
         try {
-            const arrayProductos = await this.leerArchivo();
-            const buscado = arrayProductos.find(item => item.id === id);
+            const productArray = await this.readFile();
+            const foundProduct = productArray.find(item => item.id === id);
 
-            if (!buscado) {
-                console.log("producto no encontrado");
+            if (!foundProduct) {
+                console.log("Producto no encontrado");
                 return null;
             } else {
-                console.log("producto encontrado");
-                return buscado
+                console.log("Producto encontrado");
+                return foundProduct;
             }
-
         } catch (error) {
-            
-            console.log("error al buscar por id", error);
+            console.log("Error al buscar producto por ID", error);
         }
-
     }
 
-//Métodos auxiliares: 
-async leerArchivo() {
-    const respuesta = await fs.readFile(this.path, "utf-8");
-    const arrayProductos = JSON.parse(respuesta);
-    return arrayProductos;
+    // Métodos auxiliares
+    async readFile() {
+        const response = await fs.readFile(this.path, "utf-8");
+        const productArray = JSON.parse(response);
+        return productArray;
+    }
+
+    async saveFile(productArray) {
+        await fs.writeFile(this.path, JSON.stringify(productArray, null, 2));
+    }
+
+ // Método para actualizar un producto existente
+ async updateProduct(id, updatedProduct) {
+    try {
+        const productArray = await this.readFile(); 
+
+        const index = productArray.findIndex(item => item.id === id); 
+
+        if (index !== -1) {
+            productArray[index] = { ...productArray[index], ...updatedProduct }; 
+            await this.saveFile(productArray); 
+            console.log("Producto actualizado"); 
+        } else {
+            console.log("No se encuentra el producto"); 
+        }
+    } catch (error) {
+        console.log("Tenemos un error al actualizar productos"); 
+    }
 }
 
-async guardarArchivo(arrayProductos) {
-    await fs.writeFile(this.path, JSON.stringify(arrayProductos, null, 2));
+// Método para borrar productos
+async deleteProduct(id) {
+    try {
+        const productArray = await this.readFile(); 
+
+        const index = productArray.findIndex(item => item.id === id); 
+
+        if (index !== -1) {
+            productArray.splice(index, 1); 
+            await this.saveFile(productArray); 
+            console.log("Producto eliminado"); 
+        } else {
+            console.log("No se encuentra el producto"); 
+        }
+    } catch (error) {
+        console.log("Tenemos un error al eliminar productos"); 
+    }
+}
 }
 
-}
 
 
 
 
-
-
-module.exports = ProductManager; 
+module.exports = ProductManager;
