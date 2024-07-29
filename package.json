@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Proyecto de backend 1era parte",
   "main": "index.js",
+  "type": "module",
   
   "scripts": {
     "dev": "nodemon src/app.js"

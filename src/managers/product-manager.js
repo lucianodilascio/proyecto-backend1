@@ -1,4 +1,4 @@
-const fs = require("fs").promises;
+import { promises as fs } from "fs";
 
 class ProductManager {
     static lastId = 0;
@@ -88,47 +88,44 @@ class ProductManager {
         await fs.writeFile(this.path, JSON.stringify(productArray, null, 2));
     }
 
- // Método para actualizar un producto existente
- async updateProduct(id, updatedProduct) {
-    try {
-        const productArray = await this.readFile(); 
+    // Método para actualizar un producto existente
+    async updateProduct(id, updatedProduct) {
+        try {
+            const productArray = await this.readFile(); 
 
-        const index = productArray.findIndex(item => item.id === id); 
+            const index = productArray.findIndex(item => item.id === id); 
 
-        if (index !== -1) {
-            productArray[index] = { ...productArray[index], ...updatedProduct }; 
-            await this.saveFile(productArray); 
-            console.log("Producto actualizado"); 
-        } else {
-            console.log("No se encuentra el producto"); 
+            if (index !== -1) {
+                productArray[index] = { ...productArray[index], ...updatedProduct }; 
+                await this.saveFile(productArray); 
+                console.log("Producto actualizado"); 
+            } else {
+                console.log("No se encuentra el producto"); 
+            }
+        } catch (error) {
+            console.log("Tenemos un error al actualizar productos"); 
         }
-    } catch (error) {
-        console.log("Tenemos un error al actualizar productos"); 
+    }
+
+    // Método para borrar productos
+    async deleteProduct(id) {
+        try {
+            const productArray = await this.readFile(); 
+
+            const index = productArray.findIndex(item => item.id === id); 
+
+            if (index !== -1) {
+                productArray.splice(index, 1); 
+                await this.saveFile(productArray); 
+                console.log("Producto eliminado"); 
+            } else {
+                console.log("No se encuentra el producto"); 
+            }
+        } catch (error) {
+            console.log("Tenemos un error al eliminar productos"); 
+        }
     }
 }
 
-// Método para borrar productos
-async deleteProduct(id) {
-    try {
-        const productArray = await this.readFile(); 
+export default ProductManager;
 
-        const index = productArray.findIndex(item => item.id === id); 
-
-        if (index !== -1) {
-            productArray.splice(index, 1); 
-            await this.saveFile(productArray); 
-            console.log("Producto eliminado"); 
-        } else {
-            console.log("No se encuentra el producto"); 
-        }
-    } catch (error) {
-        console.log("Tenemos un error al eliminar productos"); 
-    }
-}
-}
-
-
-
-
-
-module.exports = ProductManager;
