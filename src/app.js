@@ -3,6 +3,7 @@ import express from "express";
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import multer from "multer";
+import exphbs from "express-handlebars";
 
 // Crear una app de express
 const app = express();
@@ -11,25 +12,29 @@ const PUERTO = 8080;
 // MIDDLEWARE
 
 // Hacer que el servidor entienda y pueda usar el formato .JSON, entre el pedido y la respuesta del servidor
+//Prefijo Virtual: me permite organizarme mejor con las rutas y me proporciona una capa extra de seguridad.
 app.use(express.json());
+app.use("/static", express.static("./src/public"));
+
+//Configuramos Express-Handlebars
+
+app.engine("handlebars", exphbs.engine());
+// configuramos motor  de plantillas, que cuando express encuentre un archivo con la extension de .handlebars , lo renderice utilizando este mismo motor.
+app.set("view engine", "handlebars");
+// por ulitmo le decimos donde estan estos archivos con la extension "handlebars"
+app.set("views", "./src/views");
+
+
+
+
+
 
 // Crear nuestra ruta
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartsRouter);
 
-// CART
-// app.get("/cart", (req, res)=> {
-//     res.send("seccion cart");
-// })
 
-// A la raíz de la app
-// app.get("/", (req, res) => {
-//     res.send("hola, hemos vuelto al home");
-// })
 
-// Objeto REQUEST: req es un objeto que representa la petición del cliente al servidor. Este objeto contiene info sobre la petición realizada, por ejemplo: url, método, parámetros y queries
-
-// req.params: esta propiedad contiene los parámetros de la ruta.
 
 app.listen(PUERTO, () => {
     console.log(`escuchando en el http://localhost:${PUERTO}`);
@@ -38,7 +43,9 @@ app.listen(PUERTO, () => {
 //Prefijo Virtual: me permite organizarme mejor con las rutas y me proporciona una capa extra de seguridad.
 app.use("/static", express.static("./src/public"));
 
-
+app.get ("/", (req,res) => {
+  res.render("index");
+} )
 
 //para guardar imagenes con formato correcto, se crea un "storage".
 
