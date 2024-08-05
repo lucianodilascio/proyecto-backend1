@@ -2,7 +2,12 @@
 
 <h2 class="text-center">Para disfrutar en familia</h2> 
 
-<h2>Listado de Productos</h2>
+<h1>Listado de Productos</h1>
+<ul>
+  {{#each productos}}
+    <li>{{this.title}} - {{this.description}} - {{this.price}}</li>
+  {{/each}}
+</ul>
 
 <ul id="lista-productos"> </ul>
 
