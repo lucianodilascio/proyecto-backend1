@@ -1,4 +1,4 @@
-// Importar módulos usando import
+// Importar módulos
 import express from "express";
 import exphbs from "express-handlebars";
 import { Server } from "socket.io";
@@ -35,27 +35,21 @@ app.use("/api/products", productRouter);
 app.use("/api/carts", cartsRouter);
 
 const httpServer = app.listen(PUERTO, () => {
-  console.log(`escuchando en el http://localhost:${PUERTO}`);
+  console.log(`Escuchando en el http://localhost:${PUERTO}`);
 });
 
 const io = new Server(httpServer);
 
-// Conectar clientes y enviar productos en tiempo real
-
-
 io.on("connection", async (socket) => {
-  console.log("un cliente se comunica conmigo");
+  console.log("Un cliente se comunica conmigo");
 
-  socket.on("mensaje", (data) => {
-    console.log(data);
+  // Enviar productos al cliente
+  socket.emit("productos", await manager.getProducts());
+
+  // Manejar evento de eliminar producto
+  socket.on("eliminarProducto", async (id) => {
+    await manager.deleteProduct(id);
+    // Enviar productos actualizados al cliente
+    io.sockets.emit("productos", await manager.getProducts());
   });
-
-  try {
-    const productos = await manager.getProducts();
-    socket.emit("productos", productos);
-  } catch (error) {
-    console.error("Error al obtener productos:", error);
-  }
-
-  socket.emit("saludito", "hola cliente como le va?");
 });
