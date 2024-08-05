@@ -1,9 +1,9 @@
 // Importar módulos usando import
 import express from "express";
-import productRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
-import multer from "multer";
 import exphbs from "express-handlebars";
+import viewsRouter from "./routes/views.router.js";
+import { Server } from "socket.io";
+
 
 // Crear una app de express
 const app = express();
@@ -27,54 +27,74 @@ app.set("views", "./src/views");
 
 
 
+app.use ("/", viewsRouter);
 
-
-// Crear nuestra ruta
-app.use("/api/products", productRouter);
-app.use("/api/carts", cartsRouter);
-
-
-
-
-app.listen(PUERTO, () => {
-    console.log(`escuchando en el http://localhost:${PUERTO}`);
+const httpServer = app.listen(PUERTO, () => {
+  console.log(`escuchando en el http://localhost:${PUERTO}`);
 })
 
-//Prefijo Virtual: me permite organizarme mejor con las rutas y me proporciona una capa extra de seguridad.
-app.use("/static", express.static("./src/public"));
+const io = new Server(httpServer); 
 
-app.get ("/", (req,res) => {
-  res.render("index");
-} )
 
-//para guardar imagenes con formato correcto, se crea un "storage".
+//array de productos: 
 
-const storage = multer.diskStorage({
-  destination : (req, file, cb) => {
-    cb(null, "./src/public/img")
-  } ,
-  filename : (req, file, cb) => {
-    cb(null, file.originalname);
+const productos = [
+  {
+    "id": 1, 
+    "title": "arroz blanco",
+    "description": "Marolio",
+    "price": 200,
+    "img": "sin imagen",
+    "code": "abc123",
+    "stock": 25,
+    "category": "arroz",
+    "status": "true"
+  },
+  {
+    "id": 2,
+    "title": "fideos italianos",
+    "description": "Barilla",
+    "price": 150,
+    "img": "sin imagen",
+    "code": "def456",
+    "stock": 30,
+    "category": "pasta",
+    "status": "true"
+  },
+  {
+    "id": 3,
+    "title": "aceite de oliva",
+    "description": "Extra virgen",
+    "price": 500,
+    "img": "sin imagen",
+    "code": "ghi789",
+    "stock": 15,
+    "category": "aceite",
+    "status": "true"
   }
+]
+
+
+
+io.on("connection", (socket) => {
+
+  console.log("un cliente se comunica con migo");
+
+
+//no olvidar el nombre del evento  a escuchar, el mismo que se envia desde el cliente.
+  socket.on ("mensaje", (data) => {
+console.log(data);
+
+  })
+
+  //ahora desde el backend mandar un saludo al front
+
+  socket.emit("saludito", "hola cliente como le va?");
+
+
+//envio al front el array de productos:
+
+
+socket.emit("productos", productos);
+
 })
-
-
-
-//Creamos el middleware de carga:
-
-//const upload = multer({dest: "./src/public/img"});
-
-const upload = multer({storage: storage});
-
-
-//ruta para subir imagenes
-
-
-
-app.post ("/imagenes", upload.single("imagen"),  (req, res)=> {
-
-  res.send("imagen cargada");
-
-})
-
-//si son varias imagenes, se reemplaza "single" por "array", yo obviamente en postman seleccionamos todas las imgs a subir.

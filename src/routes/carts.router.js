@@ -1,42 +1,79 @@
 import express from "express";
-import CartManager from "../managers/cart-manager.js";
+import ProductManager from "../managers/product-manager.js";
 
+const manager = new ProductManager("./src/data/products.json");
 const router = express.Router();
-const cartManager = new CartManager("./src/data/carts.json");
 
-// Necesito una ruta POST que cree un carrito
+// PRODUCTS
+
+router.get("/", async (req, res) => {
+    const limit = req.query.limit;
+
+    try {
+        const productArray = await manager.getProducts();
+
+        if (limit) {
+            res.send(productArray.slice(0, limit));
+        } else {
+            res.send(productArray);
+        }
+    } catch (error) {
+        res.status(500).send("Internal server error");
+    }
+});
+
+// Get product by ID
+
+router.get("/:pid", async (req, res) => {
+    let id = req.params.pid;
+    try {
+        const product = await manager.getProductById(parseInt(id));
+
+        if (!product) {
+            res.send("Product not found");
+        } else {
+            res.send(product);
+        }
+    } catch (error) {
+        res.send("Error finding the product by ID");
+    }
+});
+
+// Add a new product
+
 router.post("/", async (req, res) => {
+    const newProduct = req.body;
+
     try {
-        const newCart = await cartManager.createCart();
-        res.json(newCart);
+        await manager.addProduct(newProduct);
+        res.status(201).send("Producto agregado correctamente");
     } catch (error) {
-        res.status(500).send("Error del servidor, acción denegada");
+        res.status(500).json({ status: "error", message: error.message });
     }
 });
 
-// Se listan los productos del carrito que sea:
-router.get("/:cid", async (req, res) => {
-    let cartId = parseInt(req.params.cid);
+// actualizar producto
+router.put("/:pid", async (req, res) => {
+    const id = parseInt(req.params.pid);
+    const updatedProduct = req.body;
 
     try {
-        const cart = await cartManager.getCartById(cartId);
-        res.json(cart.products);
+        await manager.updateProduct(id, updatedProduct);
+        res.send("Producto actualizado correctamente");
     } catch (error) {
-        res.status(500).send("error, no se pudo obtener el producto del carrito");
+        res.status(500).send("error, no se pudo actualizar el producto");
     }
 });
 
-// y por ultimo agregar productos al carrito
-router.post("/:cid/product/:pid", async (req, res) => {
-    let cartId = parseInt(req.params.cid);
-    let productId = req.params.pid;
-    let quantity = req.body.quantity || 1;
+// eliminar el producto:
+router.delete("/:pid", async (req, res) => {
+    const id = parseInt(req.params.pid);
 
     try {
-        const cartUpdated = await cartManager.addProductsCart(cartId, productId, quantity);
-        res.json(cartUpdated.products);
+        await manager.deleteProduct(id);
+        res.send("Producto eliminado satisfactoriamente");
     } catch (error) {
-        res.status(500).send("error al agregar producto al carrito");
+        res.status(500).send("Error en la eliminación del producto");
     }
 });
 
