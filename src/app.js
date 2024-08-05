@@ -1,100 +1,61 @@
 // Importar módulos usando import
 import express from "express";
 import exphbs from "express-handlebars";
-import viewsRouter from "./routes/views.router.js";
 import { Server } from "socket.io";
-
+import viewsRouter from "./routes/views.router.js";
+import productRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
+import ProductManager from "./managers/product-manager.js";
 
 // Crear una app de express
 const app = express();
 const PUERTO = 8080;
 
-// MIDDLEWARE
+// Crear instancia de ProductManager
+const manager = new ProductManager("./src/data/products.json");
 
-// Hacer que el servidor entienda y pueda usar el formato .JSON, entre el pedido y la respuesta del servidor
-//Prefijo Virtual: me permite organizarme mejor con las rutas y me proporciona una capa extra de seguridad.
+// Middleware para añadir manager a req
+app.use((req, res, next) => {
+  req.manager = manager;
+  next();
+});
+
+// Configurar Express-Handlebars
+app.engine("handlebars", exphbs.engine());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
+
+// MIDDLEWARE
 app.use(express.json());
 app.use("/static", express.static("./src/public"));
 
-//Configuramos Express-Handlebars
-
-app.engine("handlebars", exphbs.engine());
-// configuramos motor  de plantillas, que cuando express encuentre un archivo con la extension de .handlebars , lo renderice utilizando este mismo motor.
-app.set("view engine", "handlebars");
-// por ulitmo le decimos donde estan estos archivos con la extension "handlebars"
-app.set("views", "./src/views");
-
-
-
-
-app.use ("/", viewsRouter);
+// Usar routers
+app.use("/", viewsRouter);
+app.use("/api/products", productRouter);
+app.use("/api/carts", cartsRouter);
 
 const httpServer = app.listen(PUERTO, () => {
   console.log(`escuchando en el http://localhost:${PUERTO}`);
-})
+});
 
-const io = new Server(httpServer); 
+const io = new Server(httpServer);
+
+// Conectar clientes y enviar productos en tiempo real
 
 
-//array de productos: 
+io.on("connection", async (socket) => {
+  console.log("un cliente se comunica conmigo");
 
-const productos = [
-  {
-    "id": 1, 
-    "title": "arroz blanco",
-    "description": "Marolio",
-    "price": 200,
-    "img": "sin imagen",
-    "code": "abc123",
-    "stock": 25,
-    "category": "arroz",
-    "status": "true"
-  },
-  {
-    "id": 2,
-    "title": "fideos italianos",
-    "description": "Barilla",
-    "price": 150,
-    "img": "sin imagen",
-    "code": "def456",
-    "stock": 30,
-    "category": "pasta",
-    "status": "true"
-  },
-  {
-    "id": 3,
-    "title": "aceite de oliva",
-    "description": "Extra virgen",
-    "price": 500,
-    "img": "sin imagen",
-    "code": "ghi789",
-    "stock": 15,
-    "category": "aceite",
-    "status": "true"
+  socket.on("mensaje", (data) => {
+    console.log(data);
+  });
+
+  try {
+    const productos = await manager.getProducts();
+    socket.emit("productos", productos);
+  } catch (error) {
+    console.error("Error al obtener productos:", error);
   }
-]
-
-
-
-io.on("connection", (socket) => {
-
-  console.log("un cliente se comunica con migo");
-
-
-//no olvidar el nombre del evento  a escuchar, el mismo que se envia desde el cliente.
-  socket.on ("mensaje", (data) => {
-console.log(data);
-
-  })
-
-  //ahora desde el backend mandar un saludo al front
 
   socket.emit("saludito", "hola cliente como le va?");
-
-
-//envio al front el array de productos:
-
-
-socket.emit("productos", productos);
-
-})
+});

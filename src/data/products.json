@@ -53,5 +53,17 @@
     "stock": 50,
     "category": "harina",
     "status": "true"
+  },
+  {
+    "id": 6,
+    "title": "azúcar moreno",
+    "description": "Dulce Delicia",
+    "price": 180,
+    "img": "sin imagen",
+    "code": "pqr678",
+    "stock": 40,
+    "category": "azúcar",
+    "status": "true"
   }
+  
 ]

@@ -1,16 +1,25 @@
 <h1 class="text-center">TIENDA TODO-COMIDAS</h1>
 
-<h2 class="text-center">Para disfrutar en familia</h2> 
 
-<h1>Listado de Productos</h1>
-<ul>
-  {{#each productos}}
-    <li>{{this.title}} - {{this.description}} - {{this.price}}</li>
-<button>comprar</button>
-  {{/each}}
-</ul>
+<h1 class="text-center">Listado de Productos</h1>
 
 
+<div class="container">
+    <div class="row">
+        {{#each productos}}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <p class="card-text">{{this.description}}</p>
+                        <p class="card-text"><strong>Precio:</strong> ${{this.price}}</p>
+                        <button class="btn btn-primary">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
-<script  src="/static/js/main.js"></script>
+<script src="/static/js/main.js"></script>
