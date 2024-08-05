@@ -1,6 +1,5 @@
 import express from "express";
 import ProductManager from "../managers/product-manager.js";
-
 const manager = new ProductManager("./src/data/products.json");
 const router = express.Router();
 

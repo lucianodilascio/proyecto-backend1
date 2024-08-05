@@ -22,8 +22,8 @@ socket.on("productos", (arrayProductos)=> {
 const listaProductos = document.getElementById("lista-productos");
 
 
-arrayProductos.forEach(producto => {
-    listaProductos.innerHTML += `<li> ${producto.title} - ${producto.description} - ${producto.price} - </li>`;
-}) 
+//arrayProductos.forEach(producto => {
+  //  listaProductos.innerHTML += `<li> ${producto.title} - ${producto.description} - ${producto.price} - </li>`;
+//}) 
 
 })
