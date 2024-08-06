@@ -17,9 +17,9 @@ class ProductManager {
         }
     }
 
-    async addProduct({ title, description, price, img, code, stock, status, category, id }) {
+    async addProduct({ title, description, price, code, stock, status, category, id }) {
         // Validación y creación del objeto con el ID auto-incrementable
-        if (!title || !description || !price || !img || !code || !stock || !category || !status || !id) {
+        if (!title || !description || !price || !code || !stock || !category || !status || !id) {
             console.log("Todos los campos son obligatorios");
             return;
         }
@@ -37,7 +37,6 @@ class ProductManager {
             title,
             description,
             price,
-            img,
             code,
             stock,
             category,

@@ -12,21 +12,33 @@
   <button type="submit">Agregar Producto</button>
 </form>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
-<script src="/static/js/main.js"></script>
+
 <script>
   document.getElementById('formAgregarProducto').addEventListener('submit', function(e) {
     e.preventDefault();
+
+    // Recolectar datos del formulario
     const producto = {
       title: document.getElementById('title').value,
       description: document.getElementById('description').value,
-      price: document.getElementById('price').value,
-      img: document.getElementById('img').value,
+      price: parseFloat(document.getElementById('price').value),
       code: document.getElementById('code').value,
-      stock: document.getElementById('stock').value,
+      stock: parseInt(document.getElementById('stock').value),
       category: document.getElementById('category').value,
       status: document.getElementById('status').value
     };
-    socket.emit('nuevoProducto', producto);
+
+    // Validar datos
+    if (!producto.title || !producto.description || isNaN(producto.price) || !producto.code || isNaN(producto.stock) || !producto.category || !producto.status) {
+      console.error("Todos los campos son obligatorios");
+      return;
+    }
+
+    // Enviar datos al servidor
+    socket.emit('nuevoProducto', producto); 
   });
+;
+
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+<script src="/static/js/main.js"></script>

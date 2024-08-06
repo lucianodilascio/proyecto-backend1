@@ -48,8 +48,14 @@ io.on("connection", async (socket) => {
 
   // Manejar evento de eliminar producto
   socket.on("eliminarProducto", async (id) => {
-    await manager.deleteProduct(id);
-    // Enviar productos actualizados al cliente
+    await manager.deleteProduct(parseInt(id));
+    io.sockets.emit("productos", await manager.getProducts());
+  });
+
+  // Manejar evento de agregar producto
+  socket.on("nuevoProducto", async (producto) => {
+    await manager.addProduct(producto);
     io.sockets.emit("productos", await manager.getProducts());
   });
 });
+

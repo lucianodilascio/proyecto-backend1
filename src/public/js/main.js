@@ -12,14 +12,14 @@ const renderProductos = (productos) => {
     console.error("Contenedor de productos no encontrado.");
     return;
   }
-
   contenedorProductos.innerHTML = "";
-  productos.forEach(item => {
+  
+productos.forEach(item => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.innerHTML = `
-      <div class="card-body">
-        <h5 class="card-title">${item.title}</h5>
+      
+        <p class="card-title">${item.title}<p>
         <p class="card-text">ID: ${item.id}</p>
         <p class="card-text">Description: ${item.description}</p>
         <p class="card-text">Price: $${item.price}</p>
@@ -28,7 +28,7 @@ const renderProductos = (productos) => {
         <p class="card-text">Category: ${item.category}</p>
         <p class="card-text">Status: ${item.status}</p>
         <button class="btn btn-danger" onclick="eliminarProducto('${item.id}')">Eliminar</button>
-      </div>
+      
     `;
     contenedorProductos.appendChild(card);
   });
@@ -36,6 +36,6 @@ const renderProductos = (productos) => {
 
 // Función para eliminar producto
 const eliminarProducto = (id) => {
-  socket.emit("eliminarProducto", id);
+  socket.emit("eliminarProducto", parseInt (id));
 }
 
