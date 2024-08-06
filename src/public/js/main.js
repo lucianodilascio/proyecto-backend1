@@ -18,10 +18,17 @@ const renderProductos = (productos) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.innerHTML = `
-      <p>ID: ${item.id}</p>
-      <p>Title: ${item.title}</p>
-      <p>Price: ${item.price}</p>
-      <button onclick="eliminarProducto('${item.id}')">Eliminar</button>
+      <div class="card-body">
+        <h5 class="card-title">${item.title}</h5>
+        <p class="card-text">ID: ${item.id}</p>
+        <p class="card-text">Description: ${item.description}</p>
+        <p class="card-text">Price: $${item.price}</p>
+        <p class="card-text">Code: ${item.code}</p>
+        <p class="card-text">Stock: ${item.stock}</p>
+        <p class="card-text">Category: ${item.category}</p>
+        <p class="card-text">Status: ${item.status}</p>
+        <button class="btn btn-danger" onclick="eliminarProducto('${item.id}')">Eliminar</button>
+      </div>
     `;
     contenedorProductos.appendChild(card);
   });
@@ -31,3 +38,4 @@ const renderProductos = (productos) => {
 const eliminarProducto = (id) => {
   socket.emit("eliminarProducto", id);
 }
+

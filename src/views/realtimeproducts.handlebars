@@ -1,11 +1,32 @@
-<h2>aca se muestran todos los productos en tiempo real</h2>
-
+<h1>Productos en Tiempo Real</h1>
 <div id="contenedorProductos"></div>
 
-<h2>aca el formulario que envia el producto</h2>
-
-
-
+<form id="formAgregarProducto">
+  <input type="text" id="title" placeholder="Título" required>
+  <input type="text" id="description" placeholder="Descripción" required>
+  <input type="number" id="price" placeholder="Precio" required>
+  <input type="text" id="code" placeholder="Código" required>
+  <input type="number" id="stock" placeholder="Stock" required>
+  <input type="text" id="category" placeholder="Categoría" required>
+  <input type="text" id="status" placeholder="Estado" required>
+  <button type="submit">Agregar Producto</button>
+</form>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
 <script src="/static/js/main.js"></script>
+<script>
+  document.getElementById('formAgregarProducto').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const producto = {
+      title: document.getElementById('title').value,
+      description: document.getElementById('description').value,
+      price: document.getElementById('price').value,
+      img: document.getElementById('img').value,
+      code: document.getElementById('code').value,
+      stock: document.getElementById('stock').value,
+      category: document.getElementById('category').value,
+      status: document.getElementById('status').value
+    };
+    socket.emit('nuevoProducto', producto);
+  });
+</script>
