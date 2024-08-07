@@ -17,20 +17,23 @@ class ProductManager {
         }
     }
 
-    async addProduct({ title, description, price, code, stock, status, category, id }) {
-        // Validación y creación del objeto con el ID auto-incrementable
-        if (!title || !description || !price || !code || !stock || !category || !status || !id) {
+    async addProduct({ title, description, price, code, stock, status, category,  }) {
+        // Validación de campos obligatorios
+        if (!title || !description || !price || !code || !stock || !category || !status ) {
             console.log("Todos los campos son obligatorios");
             return;
         }
-
-        // Validar que el código sea ÚNICO
+    
+        // Cargar productos desde el archivo
+        await this.loadArray();
+    
+        // Validar que el código sea único
         if (this.products.some(item => item.code === code)) {
             console.log("El código debe ser único");
             return;
         }
-
-        // Ahora crea el nuevo objeto
+    
+        // Obtener el último ID y crear el nuevo producto
         const lastProductId = this.products.length > 0 ? this.products[this.products.length - 1].id : 0;
         const newProduct = {
             id: lastProductId + 1,
@@ -42,13 +45,13 @@ class ProductManager {
             category,
             status
         };
-
-        // Una vez creado, agregarlo al array
+    
+        // Agregar el nuevo producto al array y guardar en el archivo
         this.products.push(newProduct);
-
-        // Guardarlo en el archivo
         await this.saveFile(this.products);
+        console.log("Producto agregado correctamente");
     }
+    
 
     async getProducts() {
         try {

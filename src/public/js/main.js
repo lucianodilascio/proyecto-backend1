@@ -8,6 +8,7 @@ socket.on("productos", (data) => {
 
 const renderProductos = (productos) => {
   const contenedorProductos = document.getElementById("contenedorProductos");
+  console.log(contenedorProductos);
   if (!contenedorProductos) {
     console.error("Contenedor de productos no encontrado.");
     return;

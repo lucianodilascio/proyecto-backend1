@@ -1,13 +1,52 @@
 [
   {
-    "id": 4,
-    "title": "fideos italianos actualizados",
-    "description": "Barilla actualizada",
-    "price": 160,
-    "img": "nueva imagen",
-    "code": "def456",
+    "id": 8,
+    "title": "coca",
+    "description": "coca cola",
+    "price": 150,
+    "code": "mnb123",
+    "stock": 5,
+    "category": "gaseosa",
+    "status": "true"
+  },
+  {
+    "id": 9,
+    "title": "pizza",
+    "description": "pizza 4 quesos",
+    "price": 140,
+    "code": "bnb224",
+    "stock": 2,
+    "category": "pizza napolitana",
+    "status": "true"
+  },
+  {
+    "id": 12,
+    "title": "pepsi",
+    "description": "gaseosa cola",
+    "price": 1260,
+    "code": "zzz323",
     "stock": 25,
-    "category": "pasta actualizada",
-    "status": "false"
+    "category": "gaseosa",
+    "status": "true"
+  },
+  {
+    "id": 13,
+    "title": "chisitos",
+    "description": "chisitos cheddar",
+    "price": 1402,
+    "code": "uno213",
+    "stock": 3,
+    "category": "chisitos lays",
+    "status": "true"
+  },
+  {
+    "id": 14,
+    "title": "mayonesa",
+    "description": "hellmans",
+    "price": 1500,
+    "code": "zzc234",
+    "stock": 13,
+    "category": "aderezo",
+    "status": "true"
   }
 ]
