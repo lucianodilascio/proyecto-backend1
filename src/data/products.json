@@ -48,5 +48,25 @@
     "stock": 13,
     "category": "aderezo",
     "status": "true"
+  },
+  {
+    "id": 15,
+    "title": "alfajor negro",
+    "description": "Havana",
+    "price": 150,
+    "code": "hbc123",
+    "stock": 1,
+    "category": "alfajor",
+    "status": "true"
+  },
+  {
+    "id": 16,
+    "title": "chocolate",
+    "description": "amargo",
+    "price": 150,
+    "code": "sad412",
+    "stock": 30,
+    "category": "chocolate negro",
+    "status": "true"
   }
 ]

@@ -6,10 +6,13 @@ import viewsRouter from "./routes/views.router.js";
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import ProductManager from "./managers/product-manager.js";
+import mongoose from "mongoose";
+
 
 // Crear una app de express
 const app = express();
 const PUERTO = 8080;
+import alimentosRouter from "./routes/alimentos.router.js";
 
 // Crear instancia de ProductManager
 const manager = new ProductManager("./src/data/products.json");
@@ -27,12 +30,15 @@ app.set("views", "./src/views");
 
 // MIDDLEWARE
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static("./src/public"));
 
 // Usar routers
 app.use("/", viewsRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartsRouter);
+
+app.use("/alimentos", alimentosRouter)
 
 const httpServer = app.listen(PUERTO, () => {
   console.log(`Escuchando en el http://localhost:${PUERTO}`);
@@ -59,3 +65,7 @@ io.on("connection", async (socket) => {
   });
 });
 
+
+mongoose.connect("mongodb+srv://lucianodilascio14:coderluciano@cluster0.kdcns.mongodb.net/Almacen?retryWrites=true&w=majority&appName=Cluster0")
+.then(()=> console.log ("Conección a la base de datos satisfactoria"))
+.catch((error)=> console.log ("error en conectarse a la base de datos:", error))
