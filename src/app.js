@@ -5,8 +5,9 @@ import { Server } from "socket.io";
 import viewsRouter from "./routes/views.router.js";
 import productRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
-import ProductManager from "./managers/product-manager.js";
-import mongoose from "mongoose";
+import ProductManager from "./dao/db/product-manager-db.js";
+import "./database.js"; 
+
 
 
 // Crear una app de express
@@ -15,7 +16,7 @@ const PUERTO = 8080;
 import alimentosRouter from "./routes/alimentos.router.js";
 
 // Crear instancia de ProductManager
-const manager = new ProductManager("./src/data/products.json");
+const manager = new ProductManager();
 
 // Middleware para añadir manager a req
 app.use((req, res, next) => {
@@ -66,6 +67,3 @@ io.on("connection", async (socket) => {
 });
 
 
-mongoose.connect("mongodb+srv://lucianodilascio14:coderluciano@cluster0.kdcns.mongodb.net/Almacen?retryWrites=true&w=majority&appName=Cluster0")
-.then(()=> console.log ("Conección a la base de datos satisfactoria"))
-.catch((error)=> console.log ("error en conectarse a la base de datos:", error))

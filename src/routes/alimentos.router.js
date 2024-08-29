@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 //importante importar el Model, que es el que me comunica con la base de datos.
-import AlimentosModel from "../models/alimentos.model.js";
+import AlimentosModel from "../dao/models/product.model.js";
 
 // 1- lo primero que hay que hacer es obtener el listado de todos los alimentos.
 

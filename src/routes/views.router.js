@@ -1,10 +1,20 @@
+import express from "express";
 import { Router } from "express";
 import productRouter from "./products.router.js"; // Importa el router de productos
 import cartsRouter from "./carts.router.js"; // Importa el router de carritos
-import express from "express";
+import ProductManager from "../dao/db/product-manager-db.js"; // Asegúrate de importar ProductManager
 import multer from "multer";
 
 const router = Router();
+
+// Instancia de ProductManager
+const productManager = new ProductManager();
+
+// Middleware para agregar el manager a req
+router.use((req, res, next) => {
+  req.manager = productManager; // Usa ProductManager aquí
+  next();
+});
 
 // Crear nuestra ruta
 router.use("/api/products", productRouter);
