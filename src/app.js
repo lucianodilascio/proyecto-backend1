@@ -13,7 +13,7 @@ import "./database.js";
 // Crear una app de express
 const app = express();
 const PUERTO = 8080;
-import alimentosRouter from "./routes/alimentos.router.js";
+
 
 // Crear instancia de ProductManager
 const manager = new ProductManager();
@@ -39,7 +39,7 @@ app.use("/", viewsRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartsRouter);
 
-app.use("/alimentos", alimentosRouter)
+
 
 const httpServer = app.listen(PUERTO, () => {
   console.log(`Escuchando en el http://localhost:${PUERTO}`);
