@@ -4,7 +4,7 @@ const router = express.Router();
 import CartManager from "../dao/db/cart-manager-db.js";
 const cartManager = new CartManager();
 
-// Crear un nuevo carrito
+
 router.post("/", async (req, res) => {
     try {
         const newCart = await cartManager.createCart();
@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Obtener todos los carritos
+
 router.get("/", async (req, res) => {
     try {
         const carts = await cartManager.getCarts();
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-// Obtener un carrito por ID
+
 router.get("/:cid", async (req, res) => {
     const cartId = req.params.cid;
     try {
@@ -39,11 +39,11 @@ router.get("/:cid", async (req, res) => {
     }
 });
 
-// Agregar productos al carrito
+
 router.post("/:cid/products/:pid", async (req, res) => {
     const cartId = req.params.cid;
     const productId = req.params.pid;
-    const quantity = req.body.quantity || 1; // Default to 1 if no quantity provided
+    const quantity = req.body.quantity || 1; 
 
     try {
         const updatedCart = await cartManager.addProductsCart(cartId, productId, quantity);
@@ -53,7 +53,7 @@ router.post("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Eliminar producto del carrito
+
 router.delete("/:cid/products/:pid", async (req, res) => {
     const cartId = req.params.cid;
     const productId = req.params.pid;
@@ -70,7 +70,7 @@ router.delete("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Actualizar el carrito con un arreglo de productos
+
 router.put("/:cid", async (req, res) => {
     const cartId = req.params.cid;
     const products = req.body.products; 
@@ -87,7 +87,7 @@ router.put("/:cid", async (req, res) => {
     }
 });
 
-// Actualizar la cantidad del producto en el carrito
+
 router.put("/:cid/products/:pid", async (req, res) => {
     const cartId = req.params.cid;
     const productId = req.params.pid;
@@ -105,7 +105,7 @@ router.put("/:cid/products/:pid", async (req, res) => {
     }
 });
 
-// Eliminar todos los productos del carrito
+
 router.delete("/:cid", async (req, res) => {
     const cartId = req.params.cid;
 

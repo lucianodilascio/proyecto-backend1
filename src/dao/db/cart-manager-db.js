@@ -2,7 +2,7 @@ import CartModel from "../models/cart.model.js";
 
 class CartManager {
 
-    // Crear un nuevo carrito
+    
     async createCart() {
         try {
             const newCart = new CartModel({ products: [] });
@@ -14,7 +14,6 @@ class CartManager {
         }
     }
 
-    // Obtener carrito por ID
     async getCartById(cartId) {
         try {
             const cart = await CartModel.findById(cartId);
@@ -30,7 +29,7 @@ class CartManager {
     }
     
 
-    // Agregar productos al carrito
+    
     async addProductsCart(cartId, productId, quantity = 1) {
         try {
             const cart = await this.getCartById(cartId);
@@ -111,7 +110,7 @@ class CartManager {
             console.log("Carrito encontrado:", cart);
             console.log("Producto ID:", productId);
         
-            // Encuentra el producto en el carrito usando la estructura correcta
+            
             const productExist = cart.products.find(item => item.product._id.toString() === productId);
         
             if (!productExist) {
@@ -119,7 +118,7 @@ class CartManager {
                 return null;
             }
         
-            // Actualiza la cantidad del producto
+            
             productExist.quantity = quantity;
         
             await cart.save();

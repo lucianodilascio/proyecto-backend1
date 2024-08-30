@@ -18,22 +18,22 @@ class ProductManager {
     }
 
     async addProduct({ title, description, price, code, stock, status, category,  }) {
-        // Validación de campos obligatorios
+        
         if (!title || !description || !price || !code || !stock || !category || !status ) {
             console.log("Todos los campos son obligatorios");
             return;
         }
     
-        // Cargar productos desde el archivo
+        
         await this.loadArray();
     
-        // Validar que el código sea único
+        
         if (this.products.some(item => item.code === code)) {
             console.log("El código debe ser único");
             return;
         }
     
-        // Obtener el último ID y crear el nuevo producto
+        
         const lastProductId = this.products.length > 0 ? this.products[this.products.length - 1].id : 0;
         const newProduct = {
             id: lastProductId + 1,
@@ -46,7 +46,7 @@ class ProductManager {
             status
         };
     
-        // Agregar el nuevo producto al array y guardar en el archivo
+        
         this.products.push(newProduct);
         await this.saveFile(this.products);
         console.log("Producto agregado correctamente");
@@ -79,7 +79,7 @@ class ProductManager {
         }
     }
 
-    // Métodos auxiliares
+    
     async readFile() {
         const response = await fs.readFile(this.path, "utf-8");
         const productArray = JSON.parse(response);
@@ -90,7 +90,7 @@ class ProductManager {
         await fs.writeFile(this.path, JSON.stringify(productArray, null, 2));
     }
 
-    // Método para actualizar un producto existente
+    
     async updateProduct(id, updatedProduct) {
         try {
             const productArray = await this.readFile(); 
@@ -109,7 +109,7 @@ class ProductManager {
         }
     }
 
-    // Método para borrar productos
+    
     async deleteProduct(id) {
         try {
             const productArray = await this.readFile(); 

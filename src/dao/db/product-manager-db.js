@@ -5,20 +5,20 @@ class ProductManager {
 
     async addProduct({ title, description, price, code, img, stock, status, category, thumbnails }) {
         try {
-            // Validación de campos obligatorios
+            
             if (!title || !description || !price || !code || !stock || !category || !status || !thumbnails) {
                 console.log("Todos los campos son obligatorios");
                 return;
             }
 
-            //validacion nueva
+            
             const productExist = await ProductModel.findOne({ code: code });
             if (productExist) {
                 console.log("el codigo debe ser unico");
                 return;
             }
 
-            // crear el nuevo producto
+            
 
             const newProduct = new ProductModel({
                 title,
@@ -100,7 +100,7 @@ class ProductManager {
     }
 
 
-    // Método para actualizar un producto existente
+    
     async updateProduct(id, updatedProduct) {
         try {
             const updated = await ProductModel.findByIdAndUpdate(id, updatedProduct);
@@ -116,7 +116,7 @@ class ProductManager {
         }
     }
 
-    // Método para borrar productos
+    
     async deleteProduct(id) {
         try {
             const deleted = await ProductModel.findByIdAndDelete(id);

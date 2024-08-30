@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const cartSchema = new mongoose.Schema({
     products: [
@@ -16,19 +17,21 @@ const cartSchema = new mongoose.Schema({
     ]
 });
 
-// Middleware pre para hacer populate en findOne
+
 cartSchema.pre("findOne", function(next) {
     this.populate("products.product");
     next();
 });
 
-// Middleware pre para hacer populate en find
+
 cartSchema.pre("find", function(next) {
     this.populate("products.product");
     next();
 });
 
-const CartModel = mongoose.model("Cart", cartSchema);
+cartSchema.plugin(mongoosePaginate);
+
+const CartModel = mongoose.model("carts", cartSchema);
 
 export default CartModel;
 

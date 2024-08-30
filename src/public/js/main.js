@@ -1,7 +1,7 @@
-// Instancia de socket.io desde el front
+
 const socket = io();
 
-// Escuchamos el evento "productos" y recibimos el array de datos
+
 socket.on("productos", (data) => {
   renderProductos(data);
 });
@@ -35,7 +35,7 @@ productos.forEach(item => {
   });
 };
 
-// Función para eliminar producto
+
 const eliminarProducto = (id) => {
   socket.emit("eliminarProducto", parseInt (id));
 }

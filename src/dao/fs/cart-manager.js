@@ -6,11 +6,11 @@ class CartManager {
         this.carts = [];
         this.lastId = 0;
 
-        // Cargar los carritos almacenados
+        
         this.loadCarts();
     }
 
-    // Métodos auxiliares para leer y escribir archivos
+   
 
     async loadCarts() {
         try {
@@ -18,12 +18,12 @@ class CartManager {
             this.carts = JSON.parse(data);
 
             if (this.carts.length > 0) {
-                // Al menos un elemento creado
+                
                 this.lastId = Math.max(...this.carts.map(cart => cart.id));
             }
         } catch (error) {
             console.log("Error al cargar los carritos", error);
-            // Si el archivo no existe, crearlo
+            
             await this.saveCarts();
         }
     }
@@ -32,7 +32,7 @@ class CartManager {
         await fs.writeFile(this.path, JSON.stringify(this.carts, null, 2));
     }
 
-    // Crear un nuevo carrito
+    
     async createCart() {
         const newCart = {
             id: ++this.lastId,
@@ -45,7 +45,7 @@ class CartManager {
         return newCart;
     }
 
-    // Obtener carrito por ID
+    
     async getCartById(cartId) {
         try {
             const cart = this.carts.find(c => c.id === cartId);
@@ -60,7 +60,7 @@ class CartManager {
         }
     }
 
-    // Agregar productos al carrito
+    
     async addProductsCart(cartId, productId, quantity = 1) {
         const cart = await this.getCartById(cartId);
         const productExist = cart.products.find(p => p.product === productId);
@@ -77,7 +77,7 @@ class CartManager {
 
 
 
-    
+
 }
 
 export default CartManager;

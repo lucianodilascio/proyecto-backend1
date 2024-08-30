@@ -3,24 +3,33 @@ const router = express.Router();
 import ProductManager from "../dao/db/product-manager-db.js";
 const manager = new ProductManager();
 
-// PRODUCTS
+
 
 router.get("/", async (req, res) => {
-    const limit = req.query.limit;
-
-    try {
-        const productArray = await manager.getProducts();
-        if (limit) {
-            res.json(productArray.slice(0, limit));
-        } else {
-            res.json(productArray);
-        }
-    } catch (error) {
-        res.status(500).json({ status: "error", message: "Internal server error" });
-    }
+    
+        try{    
+            const result = await manager.getProducts(req.query);
+            res.send({ 
+                result: "success", 
+                payload: result.docs,
+                totalPages: result.totalPages,
+                prevPage: result.prevPage,
+                nextPage: result.nextPage,
+                page: result.page,
+                hasPrevPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+                prevLink: result.prevLink = result.hasPrevPage ? `http://localhost:8080/?page=${result.prevPage}` : null,
+                nextLink: result.nextLink = result.hasNextPage ? `http://localhost:8080/?page=${result.nextPage}` : null,
+                isValid: result.docs.length > 0
+            });
+            console.log(result)       
+        }catch (error){
+            res.send("Error en consultar los productos")
+            console.log(error);
+            }
 });
 
-// Get product by ID
+
 
 router.get("/:pid", async (req, res) => {
     let id = req.params.pid;
@@ -36,7 +45,7 @@ router.get("/:pid", async (req, res) => {
     }
 });
 
-// Add a new product
+
 
 router.post("/", async (req, res) => {
     const newProduct = req.body;
@@ -53,7 +62,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-// Update a product
+
 
 router.put("/:pid", async (req, res) => {
     const id = (req.params.pid);
@@ -67,7 +76,7 @@ router.put("/:pid", async (req, res) => {
     }
 });
 
-// Delete a product
+
 
 router.delete("/:pid", async (req, res) => {
     const id = (req.params.pid);

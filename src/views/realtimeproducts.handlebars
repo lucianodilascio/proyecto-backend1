@@ -18,7 +18,7 @@
   document.getElementById('formAgregarProducto').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Recolectar datos del formulario
+    
     const producto = {
         title: document.getElementById('title').value,
         description: document.getElementById('description').value,
@@ -29,7 +29,7 @@
         status: document.getElementById('status').value
     };
 
-    // Enviar los datos al servidor
+    
     fetch('/api/products', {
         method: 'POST',
         headers: {
