@@ -59,8 +59,17 @@ router.get("/products", async (req, res) => {
   }
 )
     
+router.get("/login", (req, res) => {
+  res.render("login");
+})
 
+router.get("/register", (req, res) => {
+  res.render("register");
+})
 
+router.get("/profile", (req, res) => {
+  res.render("profile");
+})
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
