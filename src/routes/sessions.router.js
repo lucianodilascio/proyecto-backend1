@@ -39,7 +39,7 @@ router.post("/register", async (req, res) => {
 
 
     } catch (error) {
-        res.status(500).send("error interno en el servidor")
+        res.status(500).send("error interno en el servidor", error)
     }
 })
 
