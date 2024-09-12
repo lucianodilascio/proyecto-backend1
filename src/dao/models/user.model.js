@@ -19,7 +19,7 @@ password: {
     type: String,
     required: true
 },
-edad: {
+age: {
     type: Number,
     required: true
 }

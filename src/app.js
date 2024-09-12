@@ -8,17 +8,16 @@ import ProductManager from "./dao/db/product-manager-db.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import sessionsRouter from "./routes/sessions.router.js"
+import "./database.js"; 
 //import FileStore from "session-file-store";
 //se inicializa de la siguiente forma:
 //const fileStore = FileStore(session);
-import sessionsRouter from "./routes/sessions.router.js"
-import "./database.js"; 
 
 // Para lograr peristencia de las sesiones con File Storage:
 //1) instalamos:  npm i session-file-store
 //2)importamos el modulo
 //3) Lo inicializamos conectado a la session.
-
 
 //Trabajamos con MongoDB:
 //1) instalamos: npm install connect-mongo
