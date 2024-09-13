@@ -10,6 +10,9 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import sessionsRouter from "./routes/sessions.router.js"
 import "./database.js"; 
+//Passport:
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 //import FileStore from "session-file-store";
 //se inicializa de la siguiente forma:
 //const fileStore = FileStore(session);
@@ -70,6 +73,11 @@ app.use(session({
 mongoUrl: "mongodb+srv://lucianodilascio14:coderluciano@cluster0.kdcns.mongodb.net/Storage?retryWrites=true&w=majority&appName=Cluster0", ttl: 100
   })
 }));
+
+//cambios de Passport: 
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use("/", viewsRouter);
